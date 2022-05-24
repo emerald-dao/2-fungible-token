@@ -8,8 +8,9 @@ import "../flow/config.js";
 
 export default function Home() {
   const [user, setUser] = useState({ loggedIn: false });
-  const [list, setList] = useState([]);
+  const [balance, setBalance] = useState('0.0');
   const [recipient, setRecipient] = useState('');
+  const [amount, setAmount] = useState('');
 
   // This keeps track of the logged in 
   // user for you automatically.
@@ -17,53 +18,19 @@ export default function Home() {
     fcl.currentUser().subscribe(setUser);
   }, [])
 
-  async function getNFTs() {
+  async function getBalance() {
 
     const result = await fcl.send([
       fcl.script`
-      import ExampleNFT from 0xDeployer
-      import MetadataViews from 0xDeployer
+      import FungibleToken from 0xDeployer
+      import ExampleToken from 0xDeployer
 
-      pub fun main(address: Address): [NFT] {
-        let collection = getAccount(address).getCapability(ExampleNFT.CollectionPublicPath)
-                          .borrow<&ExampleNFT.Collection{MetadataViews.ResolverCollection}>()
-                          ?? panic("Could not borrow a reference to the collection")
+      pub fun main(account: Address): UFix64 {
+          let vaultRef = getAccount(account).getCapability(/public/ExampleTokenBalance)
+                          .borrow<&ExampleToken.Vault{FungibleToken.Balance}>()
+                          ?? panic("Could not borrow Balance reference to the Vault")
 
-        let ids = collection.getIDs()
-
-        let answer: [NFT] = []
-
-        for id in ids {
-          // Get the basic display information for this NFT
-          let nft = collection.borrowViewResolver(id: id)
-          // Get the basic display information for this NFT
-          let view = nft.resolveView(Type<MetadataViews.Display>())!
-          let display = view as! MetadataViews.Display
-          answer.append(
-            NFT(
-              id: id, 
-              name: display.name, 
-              description: display.description, 
-              thumbnail: display.thumbnail
-            )
-          )
-        }
-
-        return answer
-      }
-
-      pub struct NFT {
-        pub let id: UInt64
-        pub let name: String 
-        pub let description: String 
-        pub let thumbnail: AnyStruct{MetadataViews.File}
-        
-        init(id: UInt64, name: String, description: String, thumbnail: AnyStruct{MetadataViews.File}) {
-          self.id = id
-          self.name = name 
-          self.description = description
-          self.thumbnail = thumbnail
-        }
+          return vaultRef.balance
       }
       `,
       fcl.args([
@@ -72,38 +39,37 @@ export default function Home() {
     ]).then(fcl.decode);
 
     console.log(result)
-
-    setList(result);
-    console.log(list)
+    setBalance(result);
   }
 
-  async function transferNFT(recipient, withdrawID) {
+  async function transferTokens(amount, recipient) {
 
-    const result = await fcl.send([
+    const transactionId = await fcl.send([
       fcl.transaction`
-      import ExampleNFT from 0xDeployer
-      import NonFungibleToken from 0xDeployer
+      import FungibleToken from 0xDeployer
+      import ExampleToken from 0xDeployer
 
-      transaction(recipient: Address, withdrawID: UInt64) {
-        let ProviderCollection: &ExampleNFT.Collection{NonFungibleToken.Provider}
-        let RecipientCollection: &ExampleNFT.Collection{NonFungibleToken.CollectionPublic}
-        
+      transaction(amount: UFix64, recipient: Address) {
+        let SentVault: @FungibleToken.Vault
         prepare(signer: AuthAccount) {
-          self.ProviderCollection = signer.borrow<&ExampleNFT.Collection{NonFungibleToken.Provider}>(from: ExampleNFT.CollectionStoragePath)
-                                      ?? panic("This user does not have a Collection.")
+            let vaultRef = signer.borrow<&ExampleToken.Vault>(from: /storage/ExampleTokenVault)
+                              ?? panic("Could not borrow reference to the owner's Vault!")
 
-          self.RecipientCollection = getAccount(recipient).getCapability(ExampleNFT.CollectionPublicPath)
-                                      .borrow<&ExampleNFT.Collection{NonFungibleToken.CollectionPublic}>()!
+            self.SentVault <- vaultRef.withdraw(amount: amount)
         }
 
         execute {
-          self.RecipientCollection.deposit(token: <- self.ProviderCollection.withdraw(withdrawID: withdrawID))
+            let receiverRef = getAccount(recipient).getCapability(/public/ExampleTokenReceiver)
+                                .borrow<&ExampleToken.Vault{FungibleToken.Receiver}>()
+                                ?? panic("Could not borrow receiver reference to the recipient's Vault")
+
+            receiverRef.deposit(from: <-self.SentVault)
         }
       }
       `,
       fcl.args([
-        fcl.arg(recipient, t.Address),
-        fcl.arg(withdrawID, t.UInt64)
+        fcl.arg(parseFloat(amount).toFixed(2), t.UFix64),
+        fcl.arg(recipient, t.Address)
       ]),
       fcl.proposer(fcl.authz),
       fcl.payer(fcl.authz),
@@ -112,30 +78,36 @@ export default function Home() {
     ]).then(fcl.decode);
 
     console.log({transactionId});
-    setList(result);
   }
 
-  async function setupCollection() {
+  async function setupVault() {
 
     const transactionId = await fcl.send([
       fcl.transaction`
-      import ExampleNFT from 0xDeployer
-      import NonFungibleToken from 0xDeployer
-      import MetadataViews from 0xDeployer
+      import FungibleToken from 0xDeployer
+      import ExampleToken from 0xDeployer
 
       transaction() {
-        
+
         prepare(signer: AuthAccount) {
-          if signer.borrow<&ExampleNFT.Collection>(from: ExampleNFT.CollectionStoragePath) == nil {
-            signer.save(<- ExampleNFT.createEmptyCollection(), to: ExampleNFT.CollectionStoragePath)
-            signer.link<&ExampleNFT.Collection{NonFungibleToken.CollectionPublic, MetadataViews.ResolverCollection}>(ExampleNFT.CollectionPublicPath, target: ExampleNFT.CollectionStoragePath)
+          if signer.borrow<&ExampleToken.Vault>(from: /storage/exampleTokenVault) == nil {
+            signer.save(
+                <-ExampleToken.createEmptyVault(),
+                to: /storage/ExampleTokenVault
+            )
+
+            signer.link<&ExampleToken.Vault{FungibleToken.Receiver}>(
+                /public/ExampleTokenReceiver,
+                target: /storage/ExampleTokenVault
+            )
+
+            signer.link<&ExampleToken.Vault{FungibleToken.Balance}>(
+                /public/ExampleTokenBalance,
+                target: /storage/ExampleTokenVault
+            )
           }
         }
-
-        execute {
-          
-        }
-      }
+    }
       `,
       fcl.args([]),
       fcl.proposer(fcl.authz),
@@ -150,7 +122,7 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>1-SIMPLE-NFT</title>
+        <title>2-FUNGIBLE-TOKEN</title>
         <meta name="description" content="Used by Emerald Academy" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -158,18 +130,12 @@ export default function Home() {
       <h1>User Address: {user.loggedIn ? user.addr : null}</h1>
       <button onClick={fcl.authenticate}>Log In</button>
       <button onClick={fcl.unauthenticate}>Log Out</button>
-      <button onClick={setupCollection}>Setup Collection</button>
-      <button onClick={getNFTs}>Get NFTs</button>
-      {list.map((nft, index) => (
-        <div key={index} style={{border: '2px solid black'}}>
-          <h1>{nft.name}</h1>
-          <p>{nft.id}</p>
-          <p>{nft.description}</p>
-          <img src={`https://ipfs.infura.io/ipfs/${nft.thumbnail.url}`} />
-          <input type="text" onChange={e => setRecipient(e.target.value)} />
-          <button onClick={() => transferNFT(recipient, nft.id)}>Transfer</button>
-        </div>
-      ))}
+      <button onClick={setupVault}>Setup Vault</button>
+      <button onClick={getBalance}>Get Balance</button>
+      <input type="text" placeholder="recipient address" onChange={e => setRecipient(e.target.value)} />
+      <input type="text" placeholder="amount" onChange={e => setAmount(e.target.value)} />
+      <button onClick={() => transferTokens(amount, recipient)}>Transfer Tokens</button>
+      <h2>Balance: {balance}</h2>
     </div>
   )
 }

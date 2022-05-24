@@ -7,7 +7,7 @@
 	},
 	"contracts": {
 		"FungibleToken": {
-			"source": "./flow/cadence/utility/FungibleToken.cdc",
+			"source": "./flow/cadence/FungibleToken.cdc",
 			"aliases": {
 				"testnet": "0x9a0766d93b6608b7"
 			}

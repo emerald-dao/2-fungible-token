@@ -70,6 +70,8 @@ You will see the user address now reflects the current logged in address
 
 That will mint 30 tokens to the Service Account (0xf8d6e0586b0a20c7)
 
+If you click 'Get Balance', you will see the updated balance on the webpage.
+
 ---
 
 # Checkpoint 3: 📘 Setup empty user Vault 

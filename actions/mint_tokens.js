@@ -1,55 +1,47 @@
 const fcl = require("@onflow/fcl");
 const t = require("@onflow/types");
-// import { mint_nfts } from "../flow/cadence/interactions.js";
 const { serverAuthorization } = require("./auth/authorization.js");
 require("../flow/config.js");
 
-async function mintNFTs() {
-  const names = ["Education", "Building", "Governance"];
-  const descriptions = [
-    "This is the logo of the Education Guild",
-    "This is the logo of the Building Guild",
-    "This is the logo of the Governance Guild"
-  ];
-  const thumbnails = [
-    "QmYVKNWdm2961QtHz721tdA8dvBT116eT2DtATsX53Kt28",
-    "QmPkJbnJSt3ZkHuGAnHyHCAhWVrneRrK6VHMjgu5oPGnoq",
-    "QmcpmzEDmZtP37csyNaYaxzhoMQmmUrQsihE3x2XGKsg1Z"
-  ];
+async function mintTokens() {
+  const amount = '30.0';
+  const recipient = '0xf8d6e0586b0a20c7';
 
   try {
     const transactionId = await fcl.send([
       fcl.transaction`
-      import ExampleNFT from 0xDeployer
-      import NonFungibleToken from 0xDeployer
-      import MetadataViews from 0xDeployer
-      
-      transaction(names: [String], descriptions: [String], thumbnails: [String]) {
-        let RecipientCollection: &ExampleNFT.Collection{NonFungibleToken.CollectionPublic}
-        
-        prepare(signer: AuthAccount) {
-          if signer.borrow<&ExampleNFT.Collection>(from: ExampleNFT.CollectionStoragePath) == nil {
-            signer.save(<- ExampleNFT.createEmptyCollection(), to: ExampleNFT.CollectionStoragePath)
-            signer.link<&ExampleNFT.Collection{NonFungibleToken.CollectionPublic, MetadataViews.ResolverCollection}>(ExampleNFT.CollectionPublicPath, target: ExampleNFT.CollectionStoragePath)
+      import FungibleToken from 0xDeployer
+      import ExampleToken from 0xDeployer
+
+      transaction(recipient: Address, amount: UFix64) {
+
+          /// Reference to the Example Token Minter Resource
+          let Minter: &ExampleToken.Minter
+
+          /// Reference to the Fungible Token Receiver of the recipient
+          let TokenReceiver: &ExampleToken.Vault{FungibleToken.Receiver}
+
+          prepare(signer: AuthAccount) {
+              // Borrow a reference to the minter resource
+              self.Minter = signer.borrow<&ExampleToken.Minter>(from: /storage/ExampleTokenMinter)
+                  ?? panic("Signer is not the token minter")
+
+              // Get the account of the recipient and borrow a reference to their receiver
+              self.TokenReceiver = getAccount(recipient).getCapability(/public/ExampleTokenReceiver)
+                                    .borrow<&ExampleToken.Vault{FungibleToken.Receiver}>()
+                                    ?? panic("Unable to borrow receiver reference")
           }
-      
-          self.RecipientCollection = signer.getCapability(ExampleNFT.CollectionPublicPath)
-                                      .borrow<&ExampleNFT.Collection{NonFungibleToken.CollectionPublic}>()!
-        }
-      
-        execute {
-          var i = 0
-          while i < names.length {
-            ExampleNFT.mintNFT(recipient: self.RecipientCollection, name: names[i], description: descriptions[i], thumbnail: thumbnails[i])
-            i = i + 1
+
+          execute {
+              let mintedVault <- self.Minter.mintTokens(amount: amount)
+              // Deposit them to the receiever
+              self.TokenReceiver.deposit(from: <-mintedVault)
           }
-        }
       }
       `,
       fcl.args([
-        fcl.arg(names, t.Array(t.String)),
-        fcl.arg(descriptions, t.Array(t.String)),
-        fcl.arg(thumbnails, t.Array(t.String))
+        fcl.arg(recipient, t.Address),
+        fcl.arg(amount, t.UFix64)
       ]),
       fcl.proposer(serverAuthorization),
       fcl.payer(serverAuthorization),
@@ -63,4 +55,4 @@ async function mintNFTs() {
   }
 }
 
-mintNFTs();
+mintTokens();
