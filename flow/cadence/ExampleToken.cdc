@@ -8,6 +8,9 @@ pub contract ExampleToken: FungibleToken {
     // Total supply of ExampleTokens in existence
     pub var totalSupply: UFix64
 
+    pub let VaultStoragePath: StoragePath
+    pub let MinterStoragePath: StoragePath
+
     // TokensInitialized
     //
     // The event that is emitted when the contract is created
@@ -140,30 +143,11 @@ pub contract ExampleToken: FungibleToken {
 
     init() {
         self.totalSupply = 0.0
-
-        // Create the Vault with the total supply of tokens and save it in storage
-        //
-        let vault <- create Vault(balance: self.totalSupply)
-        self.account.save(<- vault, to: /storage/ExampleTokenVault)
-
-        // Create a public capability to the stored Vault that only exposes
-        // the `deposit` method through the `Receiver` interface
-        //
-        self.account.link<&ExampleToken.Vault{FungibleToken.Receiver}>(
-            /public/ExampleTokenReceiver,
-            target: /storage/ExampleTokenVault
-        )
-
-        // Create a public capability to the stored Vault that only exposes
-        // the `balance` field through the `Balance` interface
-        //
-        self.account.link<&ExampleToken.Vault{FungibleToken.Balance}>(
-            /public/ExampleTokenBalance,
-            target: /storage/ExampleTokenVault
-        )
+        self.VaultStoragePath = /storage/ExampleTokenVault
+        self.MinterStoragePath = /storage/ExampleTokenMinter
 
         let minter <- create Minter()
-        self.account.save(<- minter, to: /storage/ExampleTokenMinter)
+        self.account.save(<- minter, to: self.MinterStoragePath)
 
         // Emit an event that shows that the contract was initialized
         //

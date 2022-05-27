@@ -22,8 +22,20 @@ async function mintTokens() {
           let TokenReceiver: &ExampleToken.Vault{FungibleToken.Receiver}
 
           prepare(signer: AuthAccount) {
+              if signer.borrow<&ExampleToken.Vault>(from: ExampleToken.VaultStoragePath) == nil {
+                signer.save(<- ExampleToken.createEmptyVault(), to: ExampleToken.VaultStoragePath)
+                signer.link<&ExampleToken.Vault{FungibleToken.Receiver}>(
+                  /public/ExampleTokenReceiver,
+                  target: ExampleToken.VaultStoragePath
+                )
+                signer.link<&ExampleToken.Vault{FungibleToken.Balance}>(
+                  /public/ExampleTokenBalance,
+                  target: ExampleToken.VaultStoragePath
+                )
+              }
+
               // Borrow a reference to the minter resource
-              self.Minter = signer.borrow<&ExampleToken.Minter>(from: /storage/ExampleTokenMinter)
+              self.Minter = signer.borrow<&ExampleToken.Minter>(from: ExampleToken.MinterStoragePath)
                   ?? panic("Signer is not the token minter")
 
               // Get the account of the recipient and borrow a reference to their receiver
