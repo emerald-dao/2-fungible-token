@@ -1,6 +1,6 @@
 # 💎 Emerald Academy
 
-## 🚩 Challenge 2: 🍀 Fungible Token 🤓
+## 🚩 Challenge 2: Fungible Token
 
 🎫 Deploy a FungibleToken contract to learn the basics of the Flow blockchain and Cadence. You'll use:
 - The local Flow emulator to deploy smart contracts. 
@@ -13,7 +13,7 @@
 
 ---
 
-# Checkpoint 0: 📦 Install 📚
+# 📦 Checkpoint 0: Install
 
 Required: 
 * [Git](https://git-scm.com/downloads)
@@ -55,7 +55,7 @@ flow dev-wallet
 
 ---
 
-# Checkpoint 1: 👛 Wallets
+# 👛 Checkpoint 1: Wallets
 
 > 🔥 We'll be using **the local Flow dev wallet**.
 
@@ -63,7 +63,7 @@ flow dev-wallet
 
 ---
 
-# Checkpoint 2: 📘 Reading Your Balance
+# 📘 Checkpoint 2: Reading Your Balance
 
 > When you log in, click the little spinner next to your balance in the top right. Notice that you get an error:
 
@@ -71,7 +71,7 @@ flow dev-wallet
 
 The reason for this is because we haven't set up a vault in the user's account. Let's do that in the next step.
 
-# Checkpoint 3: ✏️ Minting Fungible Tokens
+# ✏️ Checkpoint 3: Minting Fungible Tokens
 
 > In a terminal, run `npm run mint`. 
 
@@ -83,7 +83,7 @@ This will automatically set up the user's account and mint 30 tokens to their ad
 
 ---
 
-# Checkpoint 4: 📘 Setup empty user Vault 
+# 📘 Checkpoint 4: Setup empty user Vault 
 > Log out of the current account and login to another account. Refresh the balance again. You will see an error appear:
 
 <img src="https://i.imgur.com/hmS1eYZ.png" alt="error when getting tokens" />
@@ -98,7 +98,7 @@ This will set up the user's account so it can receive tokens.
 
 ---
 
-# Checkpoint 5: 💾 Transfer Tokens
+# 💾 Checkpoint 5: Transfer Tokens
 
 > 📔 Log out of your account and go back to the Service Account. In the main box, put `0x179b6b1cb6755e31` as the recipient and `10.0` as the amount, then click `Transfer Tokens`:
 
@@ -108,7 +108,7 @@ This will transfer tokens to the `0x179b6b1cb6755e31` account. Log in to that ac
 
 ---
 
-# Checkpoint 6: 💾 Deploy it to testnet!
+# 💾 Checkpoint 6: Deploy it to testnet!
 
 📔 Ready to deploy to a public testnet?!?
 
