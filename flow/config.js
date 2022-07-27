@@ -1,7 +1,7 @@
 const fcl = require("@onflow/fcl");
 
 fcl.config({
-  "app.detail.title": "1-SIMPLE-NFT", // this adds a custom name to our wallet
+  "app.detail.title": "2-FUNGIBLE-TOKEN", // this adds a custom name to our wallet
   "app.detail.icon": "https://i.imgur.com/nRX6VfZ.png", // this adds a custom image to our wallet
   "accessNode.api": process.env.NEXT_PUBLIC_ACCESS_NODE, // this is for the local emulator
   "discovery.wallet": process.env.NEXT_PUBLIC_WALLET, // this is for the local dev wallet

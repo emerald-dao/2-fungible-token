@@ -3,7 +3,6 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react';
 import styles from '../styles/Home.module.css'
 import * as fcl from "@onflow/fcl";
-import * as t from "@onflow/types";
 import "../flow/config.js";
 
 export default function Home() {
@@ -20,8 +19,8 @@ export default function Home() {
 
   async function getBalance() {
 
-    const result = await fcl.send([
-      fcl.script`
+    const result = await fcl.query({
+      cadence: `
       import FungibleToken from 0xDeployer
       import ExampleToken from 0xDeployer
 
@@ -33,19 +32,18 @@ export default function Home() {
           return vaultRef.balance
       }
       `,
-      fcl.args([
-        fcl.arg(user?.addr, t.Address)
-      ])
-    ]).then(fcl.decode);
+      args: (arg, t) => [
+        arg(user?.addr, t.Address)
+      ]
+    });
 
-    console.log(result)
     setBalance(result);
   }
 
   async function transferTokens(amount, recipient) {
 
-    const transactionId = await fcl.send([
-      fcl.transaction`
+    const transactionId = await fcl.mutate({
+      cadence: `
       import FungibleToken from 0xDeployer
       import ExampleToken from 0xDeployer
 
@@ -67,23 +65,23 @@ export default function Home() {
         }
       }
       `,
-      fcl.args([
-        fcl.arg(parseFloat(amount).toFixed(2), t.UFix64),
-        fcl.arg(recipient, t.Address)
-      ]),
-      fcl.proposer(fcl.authz),
-      fcl.payer(fcl.authz),
-      fcl.authorizations([fcl.authz]),
-      fcl.limit(999)
-    ]).then(fcl.decode);
+      args: (arg, t) => [
+        arg(parseFloat(amount).toFixed(2), t.UFix64),
+        arg(recipient, t.Address)
+      ],
+      proposer: fcl.authz,
+      payer: fcl.authz,
+      authorizations: [fcl.authz],
+      limit: 999
+    });
 
-    console.log({ transactionId });
+    console.log('Transaction Id', transactionId);
   }
 
   async function setupVault() {
 
-    const transactionId = await fcl.send([
-      fcl.transaction`
+    const transactionId = await fcl.mutate({
+      cadence: `
       import FungibleToken from 0xDeployer
       import ExampleToken from 0xDeployer
 
@@ -109,26 +107,26 @@ export default function Home() {
         }
     }
       `,
-      fcl.args([]),
-      fcl.proposer(fcl.authz),
-      fcl.payer(fcl.authz),
-      fcl.authorizations([fcl.authz]),
-      fcl.limit(999)
-    ]).then(fcl.decode);
+      args: (arg, t) => [],
+      proposer: fcl.authz,
+      payer: fcl.authz,
+      authorizations: [fcl.authz],
+      limit: 999
+    });
 
-    console.log({ transactionId });
+    console.log('Transaction Id', transactionId);
   }
 
   return (
     <div className='bg-[#011E30] flex flex-col min-h-screen'>
       <Head>
-        <title>2-SIMPLE-FT</title>
+        <title>2-FUNGIBLE-TOKEN</title>
         <meta name="description" content="Used by Emerald Academy" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className='container mx-auto flex-1 p-5'>
         <div className='mb-5 flex justify-between items-center pr-10 pt-2'>
-          <h1 className={styles.sooth}>SIMPLE-FT</h1>
+          <h1 className={styles.sooth}>FUNGIBLE-TOKEN</h1>
           <div className='flex space-x-4 items-center'>
             <h1 className='text-[#38E8C6]'>Address: </h1>
             <h1 className='border px-7 text-center text-[#38E8C6] text-sm py-1 rounded-xl border-[#38E8C6] w-56'>{user.loggedIn ? user.addr : "Please connect wallet -->"}</h1>
@@ -178,17 +176,17 @@ export default function Home() {
         </div>
       </main>
       <footer>
-      <img className="w-full" src='/city.svg' alt='city'/>
-      <div className='bg-black flex pt-10 pb-5 justify-center text-white'>
-        <div className='w-[80%] flex justify-between items-center'>
-          <div className='font-jet text-xs'>2022. All rights reserved.</div>
-          <a className='flex items-center text-[#38E8C6] hover:underline hover:underline-offset-2 space-x-1 font-poppins text-lg' href='https://academy.ecdao.org/'><h1>Emerald</h1> 
-          <img src='/EC_Education.png' width={40} alt='city'/>
-           <h1>Academy</h1></a>
-          <div className='font-jet text-xs'>Created by <a href='https://discord.gg/emeraldcity' className='text-[#38E8C6] hover:underline hover:underline-offset-2 '>Emerald City DAO</a></div>
+        <img className="w-full" src='/city.svg' alt='city' />
+        <div className='bg-black flex pt-10 pb-5 justify-center text-white'>
+          <div className='w-[80%] flex justify-between items-center'>
+            <div className='font-jet text-xs'>2022. All rights reserved.</div>
+            <a className='flex items-center text-[#38E8C6] hover:underline hover:underline-offset-2 space-x-1 font-poppins text-lg' href='https://academy.ecdao.org/'><h1>Emerald</h1>
+              <img src='/EC_Education.png' width={40} alt='city' />
+              <h1>Academy</h1></a>
+            <div className='font-jet text-xs'>Created by <a href='https://discord.gg/emeraldcity' className='text-[#38E8C6] hover:underline hover:underline-offset-2 '>Emerald City DAO</a></div>
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
     </div>
 
   )

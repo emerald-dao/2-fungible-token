@@ -1,5 +1,4 @@
 const fcl = require("@onflow/fcl");
-const t = require("@onflow/types");
 const { serverAuthorization } = require("./auth/authorization.js");
 require("../flow/config.js");
 
@@ -8,8 +7,8 @@ async function mintTokens() {
   const recipient = '0xf8d6e0586b0a20c7';
 
   try {
-    const transactionId = await fcl.send([
-      fcl.transaction`
+    const transactionId = await fcl.mutate({
+      cadence: `
       import FungibleToken from 0xDeployer
       import ExampleToken from 0xDeployer
 
@@ -51,17 +50,17 @@ async function mintTokens() {
           }
       }
       `,
-      fcl.args([
-        fcl.arg(recipient, t.Address),
-        fcl.arg(amount, t.UFix64)
-      ]),
-      fcl.proposer(serverAuthorization),
-      fcl.payer(serverAuthorization),
-      fcl.authorizations([serverAuthorization]),
-      fcl.limit(999)
-    ]).then(fcl.decode);
+      args: (arg, t) => [
+        arg(recipient, t.Address),
+        arg(amount, t.UFix64)
+      ],
+      proposer: serverAuthorization,
+      payer: serverAuthorization,
+      authorizations: [serverAuthorization],
+      limit: 999
+    });
 
-    console.log({ transactionId });
+    console.log('Transaction Id', transactionId);
   } catch (e) {
     console.log(e);
   }
