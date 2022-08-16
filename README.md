@@ -67,13 +67,13 @@ We'll be using **the local Flow dev wallet**.
 
 > When you log in, click the little spinner next to your balance in the top right. Notice that you get an error:
 
-<img src="https://i.imgur.com/IIXjt8h.png" alt="error when getting balance" />
+<img src="https://i.imgur.com/IIXjt8h.png" alt="error when getting balance" width="400" />
 
-The reason for this is because we haven't set up a vault in the user's account. Let's do that now.
+The reason for this is because we haven't set up a vault in the user's account. On Flow, you need a vault in your account to be able to store specific tokens. Let's set that up that now.
 
 > Click the `Setup Vault` button:
 
-<img src="https://i.imgur.com/4XEwntp.png" alt="setup vault for user account" />
+<img src="https://i.imgur.com/4XEwntp.png" alt="setup vault for user account" width="400" />
 
 This will set up the user's account so it can receive tokens.
 
@@ -94,11 +94,11 @@ This will mint 30 tokens to their address (`0xf8d6e0586b0a20c7`).
 # 📘 Checkpoint 4: Setup empty user Vault 
 > Log out of the current account and login to another account. Refresh the balance again. You will see an error appear:
 
-<img src="https://i.imgur.com/hmS1eYZ.png" alt="error when getting tokens" />
+<img src="https://i.imgur.com/hmS1eYZ.png" alt="error when getting tokens" width="400" />
 
 Again, this is because we haven't set up the user's account. We will do this again by clicking the `Setup Vault` button:
 
-<img src="https://i.imgur.com/4XEwntp.png" alt="setup vault for user account" />
+<img src="https://i.imgur.com/4XEwntp.png" alt="setup vault for user account" width="400" />
 
 This will set up the user's account so it can receive tokens.
 
@@ -126,7 +126,7 @@ This will transfer tokens to the `0x179b6b1cb6755e31` account. Log in to that ac
 
 > 👛 Create your **deployer account** by going to https://testnet-faucet.onflow.org/, pasting in your public key from above, and clicking `CREATE ACCOUNT`: 
 
-<img src="https://i.imgur.com/OitvEoO.png" alt="configure testnet account on the website" />
+<img src="https://i.imgur.com/OitvEoO.png" alt="configure testnet account on the website" width="400" />
 
 > After it finishes, click `COPY ADDRESS` and make sure to save that address somewhere. You will need it!
 
