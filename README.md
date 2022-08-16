@@ -164,6 +164,8 @@ This will transfer tokens to the `0x179b6b1cb6755e31` account. Log in to that ac
 }
 ```
 
+Notice that we do not want to re-deploy FungibleToken. That is because they are already deploy and live on Flow testnet!
+
 > 🚀 Deploy your HelloWorld smart contract:
 
 ```sh
