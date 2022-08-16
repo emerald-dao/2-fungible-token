@@ -4,7 +4,7 @@
 //
 // The withdraw amount and the account from getAccount
 // would be the parameters to the transaction
-import FungibleToken from "../FungibleToken.cdc"
+import FungibleToken from "../utility/FungibleToken.cdc"
 import ExampleToken from "../ExampleToken.cdc"
 
 transaction(amount: UFix64, recipient: Address) {

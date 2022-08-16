@@ -1,4 +1,4 @@
-import FungibleToken from "../FungibleToken.cdc"
+import FungibleToken from "../utility/FungibleToken.cdc"
 import ExampleToken from "../ExampleToken.cdc"
 
 transaction(recipient: Address, amount: UFix64) {

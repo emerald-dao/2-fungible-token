@@ -21,7 +21,7 @@ export default function Home() {
 
     const result = await fcl.query({
       cadence: `
-      import FungibleToken from 0xDeployer
+      import FungibleToken from 0xStandard
       import ExampleToken from 0xDeployer
 
       pub fun main(account: Address): UFix64 {
@@ -44,7 +44,7 @@ export default function Home() {
 
     const transactionId = await fcl.mutate({
       cadence: `
-      import FungibleToken from 0xDeployer
+      import FungibleToken from 0xStandard
       import ExampleToken from 0xDeployer
 
       transaction(amount: UFix64, recipient: Address) {
@@ -82,7 +82,7 @@ export default function Home() {
 
     const transactionId = await fcl.mutate({
       cadence: `
-      import FungibleToken from 0xDeployer
+      import FungibleToken from 0xStandard
       import ExampleToken from 0xDeployer
 
       transaction() {

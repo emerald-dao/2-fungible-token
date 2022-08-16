@@ -69,15 +69,23 @@ flow dev-wallet
 
 <img src="https://i.imgur.com/IIXjt8h.png" alt="error when getting balance" />
 
-The reason for this is because we haven't set up a vault in the user's account. Let's do that in the next step.
+The reason for this is because we haven't set up a vault in the user's account. Let's do that now.
+
+> Click the `Setup Vault` button:
+
+<img src="https://i.imgur.com/4XEwntp.png" alt="setup vault for user account" />
+
+This will set up the user's account so it can receive tokens.
+
+> Try refreshing the balance again. You will see a balance of 0.0. So let's mint some tokens!
 
 # ✏️ Checkpoint 3: Minting Fungible Tokens
 
-> In a terminal, run `npm run mint`. 
+> In a terminal, run `npm run mint 0xf8d6e0586b0a20c7 30.0`. 
 
 <img src="https://i.imgur.com/hTEzmqe.png" alt="mint fungible tokens" />
 
-This will automatically set up the user's account and mint 30 tokens to their address (`0xf8d6e0586b0a20c7`).
+This will mint 30 tokens to their address (`0xf8d6e0586b0a20c7`).
 
 > Go back to your application and refresh the balance again. Notice that you have a balance of 30.0 now! Woooohoooo.
 
@@ -88,7 +96,7 @@ This will automatically set up the user's account and mint 30 tokens to their ad
 
 <img src="https://i.imgur.com/hmS1eYZ.png" alt="error when getting tokens" />
 
-Again, this is because we haven't set up the user's account. This time, we will do it manually by clicking the `Setup Vault` button:
+Again, this is because we haven't set up the user's account. We will do this again by clicking the `Setup Vault` button:
 
 <img src="https://i.imgur.com/4XEwntp.png" alt="setup vault for user account" />
 
@@ -150,7 +158,6 @@ This will transfer tokens to the `0x179b6b1cb6755e31` account. Log in to that ac
   },
   "testnet": {
     "testnet-account": [
-      "FungibleToken",
       "ExampleToken"
     ]
   }
@@ -169,12 +176,22 @@ flow project deploy --network=testnet
 
 In your .env file, change the following:
 1. `NEXT_PUBLIC_CONTRACT_ADDRESS` to your generated testnet address
-2. `NEXT_PUBLIC_ACCESS_NODE` to `https://rest-testnet.onflow.org`
-3. `NEXT_PUBLIC_WALLET` to `https://fcl-discovery.onflow.org/testnet/authn` 
+2. `NEXT_PUBLIC_STANDARD_ADDRESS` to `0x9a0766d93b6608b7`
+3. `PRIVATE_KEY` to your private key
+4. `NEXT_PUBLIC_ACCESS_NODE` to `https://rest-testnet.onflow.org`
+5. `NEXT_PUBLIC_WALLET` to `https://fcl-discovery.onflow.org/testnet/authn` 
 
 You can now terminate all your terminals since we no longer need to run our own local blockchain or wallet. Everything lives on testnet!
 
-> Run `npm run dev` to start your application in a terminal, and have a blast with your DApp!
+> Run npm run dev to start your application in a terminal.
+
+> On http://localhost:3000/, click "connect" and log in to your Blocto or Lilico wallet, making sure to copy the address you log in with.
+
+> In a terminal, run `npm run mint [THE ADDRESS YOU COPIED ABOVE] [AMOUNT OF TOKENS]`
+
+> In your terminal, you should see a printed "Transaction Id". If you go to [Testnet Flowscan](https://testnet.flowscan.org/) and paste in that Transaction Id, you should see information about that minting transaction.
+
+Click "Get NFTs", and you should see all your NFTs in your account!
 
 ---
 

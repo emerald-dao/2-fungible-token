@@ -1,7 +1,7 @@
 // This is an example implementation of a Flow Fungible Token
 // It is not part of the official standard but it assumed to be
 // very similar to how many NFTs would implement the core functionality.
-import FungibleToken from "./FungibleToken.cdc"
+import FungibleToken from "./utility/FungibleToken.cdc"
 
 pub contract ExampleToken: FungibleToken {
 
