@@ -4,8 +4,6 @@ require("../flow/config.js");
 
 async function mintTokens(recipient, amount) {
 
-  console.log(recipient, amount, "30")
-
   try {
     const transactionId = await fcl.mutate({
       cadence: `
