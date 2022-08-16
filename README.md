@@ -185,7 +185,7 @@ In your .env file, change the following:
 
 You can now terminate all your terminals since we no longer need to run our own local blockchain or wallet. Everything lives on testnet!
 
-> Run npm run dev to start your application in a terminal.
+> Run `npm run dev` to start your application in a terminal.
 
 > On http://localhost:3000/, click "connect" and log in to your Blocto or Lilico wallet, making sure to copy the address you log in with.
 
