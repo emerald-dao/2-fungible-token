@@ -4,7 +4,7 @@ require("../flow/config.js");
 
 async function mintTokens(recipient, amount) {
 
-  console.log(recipient, amount)
+  console.log(recipient, amount, "30")
 
   try {
     const transactionId = await fcl.mutate({
@@ -40,7 +40,7 @@ async function mintTokens(recipient, amount) {
       `,
       args: (arg, t) => [
         arg(recipient, t.Address),
-        arg(amount, t.UFix64)
+        arg(parseFloat(amount).toFixed(2), t.UFix64)
       ],
       proposer: serverAuthorization,
       payer: serverAuthorization,
