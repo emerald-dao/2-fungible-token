@@ -166,7 +166,7 @@ This will transfer tokens to the `0x179b6b1cb6755e31` account. Log in to that ac
 
 Notice that we do not want to re-deploy FungibleToken. That is because they are already deploy and live on Flow testnet!
 
-> 🚀 Deploy your HelloWorld smart contract:
+> 🚀 Deploy your ExampleToken smart contract:
 
 ```sh
 flow project deploy --network=testnet
@@ -199,7 +199,7 @@ Click "Get NFTs", and you should see all your NFTs in your account!
 
 # 📝 Make Edits!
 
-🔏 You can also check out your smart contract `ExampleNFT.cdc` in `flow/cadence/ExampleNFT.cdc`.
+🔏 You can also check out your smart contract `ExampleToken.cdc` in `flow/cadence/ExampleToken.cdc`.
 
 💼 Take a quick look at how your contract get deployed in `flow.json`.
 
