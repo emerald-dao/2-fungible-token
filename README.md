@@ -13,6 +13,12 @@
 
 ---
 
+# Video Walkthrough
+
+Want a video walkthrough? Check out Jacob Tucker's walkthrough here: [![Challenge #2 (Fungible Token) Walkthrough](https://i.imgur.com/hbaBWoB.jpg)](https://www.youtube.com/watch?v=VXTOy7W7iQo "Emerald Academy - Challenge #2 (Fungible Token) Walkthrough")
+
+---
+
 # 📦 Checkpoint 0: Install
 
 Required: 
