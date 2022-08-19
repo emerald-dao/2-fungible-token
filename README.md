@@ -197,7 +197,7 @@ You can now terminate all your terminals since we no longer need to run our own 
 
 > In your terminal, you should see a printed "Transaction Id". If you go to [Testnet Flowscan](https://testnet.flowscan.org/) and paste in that Transaction Id, you should see information about that minting transaction.
 
-Click "Get NFTs", and you should see all your NFTs in your account!
+Refresh the balance once again, and you should see tokens minted to your account :)
 
 ---
 
