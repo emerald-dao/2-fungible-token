@@ -91,7 +91,9 @@ This will mint 30 tokens to their address (`0xf8d6e0586b0a20c7`).
 
 ---
 
-# 📘 Checkpoint 4: Setup empty user Vault 
+# 📘 Checkpoint 4: Setup Second User Vault 
+We want to transfer tokens to another account, but the problem is we don't have another account (that is set up properly) to transfer tokens to!
+
 > Log out of the current account and login to another account. Refresh the balance again. You will see an error appear:
 
 <img src="https://i.imgur.com/hmS1eYZ.png" alt="error when getting tokens" width="400" />
@@ -172,7 +174,7 @@ Notice that we do not want to re-deploy FungibleToken. That is because they are 
 flow project deploy --network=testnet
 ```
 
-<img src="https://i.imgur.com/M7CBp6A.png" alt="deploy contract to testnet" />
+<img src="https://i.imgur.com/iTqfXeg.png" alt="deploy contract to testnet" />
 
 > Lastly, configure your .env file to point to Flow TestNet so we can interact with your new contract.
 
@@ -189,7 +191,9 @@ You can now terminate all your terminals since we no longer need to run our own 
 
 > On http://localhost:3000/, click "connect" and log in to your Blocto or Lilico wallet, making sure to copy the address you log in with.
 
-> In a terminal, run `npm run mint [THE ADDRESS YOU COPIED ABOVE] [AMOUNT OF TOKENS]`
+> Click "Setup Vault" to give yourself a vault and the ability to store tokens
+
+> In a terminal, run `npm run mint [THE ADDRESS OF THE ACCOUNT YOU'RE LOGGED IN TO] [AMOUNT OF TOKENS]`
 
 > In your terminal, you should see a printed "Transaction Id". If you go to [Testnet Flowscan](https://testnet.flowscan.org/) and paste in that Transaction Id, you should see information about that minting transaction.
 
