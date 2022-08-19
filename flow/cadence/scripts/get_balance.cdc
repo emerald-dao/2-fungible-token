@@ -3,7 +3,7 @@ import FungibleToken from "../utility/FungibleToken.cdc"
 import ExampleToken from "../ExampleToken.cdc"
 
 pub fun main(account: Address): UFix64 {
-    let vaultRef = getAccount(account).getCapability(/public/ExampleTokenBalance)
+    let vaultRef = getAccount(account).getCapability(ExampleToken.VaultBalancePath)
                     .borrow<&ExampleToken.Vault{FungibleToken.Balance}>()
                     ?? panic("Could not borrow Balance reference to the Vault")
 

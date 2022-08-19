@@ -25,7 +25,7 @@ export default function Home() {
       import ExampleToken from 0xDeployer
 
       pub fun main(account: Address): UFix64 {
-          let vaultRef = getAccount(account).getCapability(/public/ExampleTokenBalance)
+          let vaultRef = getAccount(account).getCapability(ExampleToken.VaultBalancePath)
                           .borrow<&ExampleToken.Vault{FungibleToken.Balance}>()
                           ?? panic("Could not borrow Balance reference to the Vault")
 
@@ -50,14 +50,14 @@ export default function Home() {
       transaction(amount: UFix64, recipient: Address) {
         let SentVault: @FungibleToken.Vault
         prepare(signer: AuthAccount) {
-            let vaultRef = signer.borrow<&ExampleToken.Vault>(from: /storage/ExampleTokenVault)
+            let vaultRef = signer.borrow<&ExampleToken.Vault>(from: ExampleToken.VaultStoragePath)
                               ?? panic("Could not borrow reference to the owner's Vault!")
 
             self.SentVault <- vaultRef.withdraw(amount: amount)
         }
 
         execute {
-            let receiverRef = getAccount(recipient).getCapability(/public/ExampleTokenReceiver)
+            let receiverRef = getAccount(recipient).getCapability(ExampleToken.VaultReceiverPath)
                                 .borrow<&ExampleToken.Vault{FungibleToken.Receiver}>()
                                 ?? panic("Could not borrow receiver reference to the recipient's Vault")
 
@@ -88,20 +88,20 @@ export default function Home() {
       transaction() {
 
         prepare(signer: AuthAccount) {
-          if signer.borrow<&ExampleToken.Vault>(from: /storage/exampleTokenVault) == nil {
+          if signer.borrow<&ExampleToken.Vault>(from: ExampleToken.VaultStoragePath) == nil {
             signer.save(
                 <-ExampleToken.createEmptyVault(),
                 to: /storage/ExampleTokenVault
             )
 
             signer.link<&ExampleToken.Vault{FungibleToken.Receiver}>(
-                /public/ExampleTokenReceiver,
-                target: /storage/ExampleTokenVault
+                ExampleToken.VaultReceiverPath,
+                target: ExampleToken.VaultStoragePath
             )
 
             signer.link<&ExampleToken.Vault{FungibleToken.Balance}>(
-                /public/ExampleTokenBalance,
-                target: /storage/ExampleTokenVault
+                ExampleToken.VaultBalancePath,
+                target: ExampleToken.VaultStoragePath
             )
           }
         }

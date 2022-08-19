@@ -24,7 +24,7 @@ async function mintTokens(recipient, amount) {
                   ?? panic("Signer is not the token minter")
 
               // Get the account of the recipient and borrow a reference to their receiver
-              self.TokenReceiver = getAccount(recipient).getCapability(/public/ExampleTokenReceiver)
+              self.TokenReceiver = getAccount(recipient).getCapability(ExampleToken.VaultReceiverPath)
                                     .borrow<&ExampleToken.Vault{FungibleToken.Receiver}>()
                                     ?? panic("Unable to borrow receiver reference")
           }

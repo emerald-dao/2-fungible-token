@@ -11,11 +11,11 @@ transaction(recipient: Address, amount: UFix64) {
 
     prepare(signer: AuthAccount) {
         // Borrow a reference to the minter resource
-        self.Minter = signer.borrow<&ExampleToken.Minter>(from: /storage/ExampleTokenMinter)
+        self.Minter = signer.borrow<&ExampleToken.Minter>(from: ExampleToken.MinterStoragePath)
             ?? panic("Signer is not the token minter")
 
         // Get the account of the recipient and borrow a reference to their receiver
-        self.TokenReceiver = getAccount(recipient).getCapability(/public/ExampleTokenReceiver)
+        self.TokenReceiver = getAccount(recipient).getCapability(ExampleToken.VaultReceiverPath)
                               .borrow<&ExampleToken.Vault{FungibleToken.Receiver}>()
                               ?? panic("Unable to borrow receiver reference")
     }

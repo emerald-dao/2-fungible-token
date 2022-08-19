@@ -9,6 +9,8 @@ pub contract ExampleToken: FungibleToken {
     pub var totalSupply: UFix64
 
     pub let VaultStoragePath: StoragePath
+    pub let VaultReceiverPath: PublicPath
+    pub let VaultBalancePath: PublicPath
     pub let MinterStoragePath: StoragePath
 
     // TokensInitialized
@@ -144,6 +146,8 @@ pub contract ExampleToken: FungibleToken {
     init() {
         self.totalSupply = 0.0
         self.VaultStoragePath = /storage/ExampleTokenVault
+        self.VaultReceiverPath = /public/ExampleTokenReceiver
+        self.VaultBalancePath = /public/ExampleTokenBalance
         self.MinterStoragePath = /storage/ExampleTokenMinter
 
         let minter <- create Minter()
