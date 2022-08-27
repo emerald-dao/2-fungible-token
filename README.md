@@ -30,14 +30,23 @@ Required:
 git clone https://github.com/emerald-dao/2-fungible-token.git
 ```
 
-> Rename .env.example to .env
-> Rename flow.json.example to flow.json
-
-> in a terminal window, 📱 install the dependencies start your frontend:
+> in a terminal window, 📱 install the dependencies:
 
 ```sh
 cd 2-fungible-token
 npm install
+```
+
+> Rename .env.example to .env && flow.json.example to flow.json:
+
+```sh
+mv .env.example .env
+mv flow.json.example flow.json
+```
+
+> Start the frontend:
+
+```sh
 npm run dev
 ```
 
