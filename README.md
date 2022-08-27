@@ -30,6 +30,9 @@ Required:
 git clone https://github.com/emerald-dao/2-fungible-token.git
 ```
 
+> Rename .env.example to .env
+> Rename flow.json.example to flow.json
+
 > in a terminal window, 📱 install the dependencies start your frontend:
 
 ```sh
@@ -75,7 +78,7 @@ We'll be using **the local Flow dev wallet**.
 
 <img src="https://i.imgur.com/IIXjt8h.png" alt="error when getting balance" width="400" />
 
-The reason for this is because we haven't set up a vault in the user's account. On Flow, you need a vault in your account to be able to store specific tokens. Let's set that up that now.
+The reason for this is because we haven't set up a vault in the user's account. On Flow, you need a vault in your account to be able to store specific tokens. Let's set that up now.
 
 > Click the `Setup Vault` button:
 
