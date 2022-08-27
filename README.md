@@ -4,7 +4,7 @@
 
 🎫 Deploy a FungibleToken contract to learn the basics of the Flow blockchain and Cadence. You'll use:
 - The local Flow emulator to deploy smart contracts. 
-- The local Flow dev wallet to log into test accounts.
+- The local Flow dev wallet to log in to test accounts.
 - A template Next.js app with sample scripts and transactions to interact with your contract.
 
 🌟 The final deliverable is a DApp that lets users create their own fungible token and transfer them to another account on Flow testnet.
@@ -214,7 +214,7 @@ Refresh the balance once again, and you should see tokens minted to your account
 
 🔏 You can also check out your smart contract `ExampleToken.cdc` in `flow/cadence/ExampleToken.cdc`.
 
-💼 Take a quick look at how your contract get deployed in `flow.json`.
+💼 Take a quick look at how your contract gets deployed in `flow.json`.
 
 📝 If you want to make frontend edits, open `index.js` in `pages/index.js`.
 
