@@ -112,7 +112,7 @@ export default function Home() {
               signer.link<&ExampleToken.Vault{FungibleToken.Balance}>(ExampleToken.VaultBalancePath, target: ExampleToken.VaultStoragePath)
           }
         }
-    }
+      }
       `,
       args: (arg, t) => [],
       proposer: fcl.authz,
