@@ -4,7 +4,7 @@
 
 🎫 Deploy a FungibleToken contract to learn the basics of the Flow blockchain and Cadence. You'll use:
 - The local Flow emulator to deploy smart contracts. 
-- The local Flow dev wallet to log into test accounts.
+- The local Flow dev wallet to log in to test accounts.
 - A template Next.js app with sample scripts and transactions to interact with your contract.
 
 🌟 The final deliverable is a DApp that lets users create their own fungible token and transfer them to another account on Flow testnet.
@@ -30,11 +30,23 @@ Required:
 git clone https://github.com/emerald-dao/2-fungible-token.git
 ```
 
-> in a terminal window, 📱 install the dependencies start your frontend:
+> in a terminal window, 📱 install the dependencies:
 
 ```sh
 cd 2-fungible-token
 npm install
+```
+
+> Rename .env.example to .env && flow.json.example to flow.json:
+
+```sh
+mv .env.example .env
+mv flow.json.example flow.json
+```
+
+> Start the frontend:
+
+```sh
 npm run dev
 ```
 
@@ -75,7 +87,7 @@ We'll be using **the local Flow dev wallet**.
 
 <img src="https://i.imgur.com/IIXjt8h.png" alt="error when getting balance" width="400" />
 
-The reason for this is because we haven't set up a vault in the user's account. On Flow, you need a vault in your account to be able to store specific tokens. Let's set that up that now.
+The reason for this is because we haven't set up a vault in the user's account. On Flow, you need a vault in your account to be able to store specific tokens. Let's set that up now.
 
 > Click the `Setup Vault` button:
 
@@ -211,7 +223,7 @@ Refresh the balance once again, and you should see tokens minted to your account
 
 🔏 You can also check out your smart contract `ExampleToken.cdc` in `flow/cadence/ExampleToken.cdc`.
 
-💼 Take a quick look at how your contract get deployed in `flow.json`.
+💼 Take a quick look at how your contract gets deployed in `flow.json`.
 
 📝 If you want to make frontend edits, open `index.js` in `pages/index.js`.
 
