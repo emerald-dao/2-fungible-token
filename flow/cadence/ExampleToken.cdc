@@ -145,10 +145,10 @@ pub contract ExampleToken: FungibleToken {
 
     init() {
         self.totalSupply = 0.0
-        self.VaultStoragePath = /storage/ExampleTokenVault
-        self.VaultReceiverPath = /public/ExampleTokenReceiver
-        self.VaultBalancePath = /public/ExampleTokenBalance
-        self.MinterStoragePath = /storage/ExampleTokenMinter
+        self.VaultStoragePath = /storage/EmeraldAcademyFungibleTokenVault
+        self.VaultReceiverPath = /public/EmeraldAcademyFungibleTokenReceiver
+        self.VaultBalancePath = /public/EmeraldAcademyFungibleTokenBalance
+        self.MinterStoragePath = /storage/EmeraldAcademyFungibleTokenMinter
 
         let minter <- create Minter()
         self.account.save(<- minter, to: self.MinterStoragePath)
@@ -158,3 +158,4 @@ pub contract ExampleToken: FungibleToken {
         emit TokensInitialized(initialSupply: self.totalSupply)
     }
 }
+ 
