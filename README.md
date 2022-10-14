@@ -190,17 +190,14 @@ In your .env file, change the following:
 
 You can now terminate all your terminals since we no longer need to run our own local blockchain or wallet. Everything lives on testnet!
 
-> Run `npm run dev` to start your application in a terminal.
+Let's try out our DApp on testnet:
 
-> On http://localhost:3000/, click "connect" and log in to your Blocto or Lilico wallet, making sure to copy the address you log in with.
-
-> Click "Setup Vault" to give yourself a vault and the ability to store tokens
-
-> In a terminal, run `npm run mint [THE ADDRESS OF THE ACCOUNT YOU'RE LOGGED IN TO] [AMOUNT OF TOKENS]`
-
-> In your terminal, you should see a printed "Transaction Id". If you go to [Testnet Flowscan](https://testnet.flowscan.org/) and paste in that Transaction Id, you should see information about that minting transaction.
-
-Refresh the balance once again, and you should see tokens minted to your account :)
+1. Run `npm run dev` to start your application in a terminal.
+2. On http://localhost:3000/, click "connect" and log in to your Blocto or Lilico wallet, making sure to copy the address you log in with.
+3. Click "Setup Vault" to give yourself a vault and the ability to store tokens
+4. In a terminal, run `npm run mint [THE ADDRESS OF THE ACCOUNT YOU'RE LOGGED IN TO] [AMOUNT OF TOKENS]`
+5. In your terminal, you should see a printed "Transaction Id". If you go to [Testnet Flowscan](https://testnet.flowscan.org/) and paste in that Transaction Id, you should see information about that minting transaction.
+6. Refresh the balance once again, and you should see tokens minted to your account :)
 
 ---
 
